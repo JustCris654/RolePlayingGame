@@ -9,13 +9,22 @@ namespace RolePlayingGame {
 
         /// <summary>
         /// La creatura attacca un'altra creatura
-        /// Restituisce 0 se l'attacco è andato a buon fine
-        /// Restituisce 1 se l'attacco è stato parato
-        /// Restituisce 2 se l'attacco è stato parato e deflesso
+        /// Restituisce i dati relativi all'attacco cioè:
+        /// Risultati, danno effettuati e danni subiti -> AttackResult struct
         /// </summary>
-        public override int Attack( Creature other ) {
-            Random rnd = new Random();
-            return other.Parry( Fate.Next( 0, _dexterity + 1 ), this );
+        public override AttackResult Attack( Creature other ) {
+            AttackResult result;
+            if ( base.IsDead || base.IsUnconscious ) {
+                result = new AttackResult( Results.Failed, 0, 0 );
+            }
+            else {
+                int res = other.Parry( Fate.Next( 0, _strenght + 1 ), this );
+                if ( res      > 0 ) result = new AttackResult( Results.Success, res, 0 );
+                else if ( res < 0 ) result = new AttackResult( Results.ParryAndRiposte, 0, res * ( -1 ) );
+                else result                = new AttackResult( Results.Parry, 0, 0 );
+            }
+
+            return result;
         }
 
 
@@ -29,25 +38,28 @@ namespace RolePlayingGame {
         public override int Parry( int damage, Creature attacker ) {
             //il goblin viene danneggiato
             if ( _dexterity < damage ) {
-                DecreaseHealth( damage - _dexterity );
-                return 0;
+                damage -= _dexterity;
+                DecreaseHealth( damage );
+                return damage;
             }
             //il goblin effettua un parry con riposte alla creatura avversaria
             else if ( _dexterity >= damage * 2 ) {
-                attacker.Riposte( damage );
-                return 2;
+                return attacker.Riposte( damage ) * ( -1 );
             }
             //il goblin effettua un parry all'attcco
             else {
-                return 1;
+                return 0;
             }
         }
 
         /// <summary>
         /// Questo metodo decrementa la vita della creatura che ha ricevuta una deflezione del danno
+        /// e ritorna il valore del danno
         /// </summary>
-        public override void Riposte( int damage ) {
-            DecreaseHealth( (int) ( damage * 1.5f ) );
+        public override int Riposte( int damage ) {
+            damage = (int) ( damage * 1.5f );
+            DecreaseHealth( damage );
+            return damage;
         }
 
         public override string ToString( ) {

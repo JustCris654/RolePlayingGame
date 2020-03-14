@@ -22,8 +22,8 @@ namespace RolePlayingGame {
             // Console.WriteLine( goblin2 +"\n"  );
 
             while ( goblin1.IsAlive && goblin2.IsAlive ) {
-                goblin1.Attack( goblin2 );
-                goblin2.Attack( goblin1 );
+                Console.WriteLine( goblin1.Attack( goblin2 ) );
+                Console.WriteLine( goblin2.Attack( goblin1 ) );
                 Console.WriteLine( goblin1 +"\n" );
                 Console.WriteLine( goblin2 +"\n\n\n");
             }

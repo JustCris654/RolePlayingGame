@@ -23,13 +23,13 @@ namespace RolePlayingGame {
         #region methods
 
         //attacco
-        public abstract int Attack( Creature other );
+        public abstract AttackResult Attack( Creature other );
 
         //parata
         public abstract int Parry( int damage, Creature attacker );
 
         //risposta
-        public abstract void Riposte( int damage );
+        public abstract int Riposte( int damage );
 
 
         protected void DecreaseHealth( int damage ) {
