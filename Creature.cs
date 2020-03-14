@@ -5,11 +5,14 @@ namespace RolePlayingGame {
     public abstract class Creature {
         #region variables
 
-        protected     string _name;
-        protected     int    _strenght;
-        protected     int    _dexterity;
-        protected     int    _healthPoints;
-        public static Random Fate { get; } = new Random();
+        protected        string _name;
+        protected        int    _strenght;
+        protected        int    _dexterity;
+        protected        int    _healthPoints;
+        protected        double _money;
+        protected        Level  _level;
+        protected int InitialHealthPoints { get; }
+        protected static Random Fate { get; } = new Random();
 
         #endregion
 
@@ -18,7 +21,21 @@ namespace RolePlayingGame {
             _strenght     = strenght;
             _dexterity    = dexterity;
             _healthPoints = healthPoints;
+            InitialHealthPoints = _healthPoints;
         }
+
+        public string Name => _name;
+
+        public int Strenght => (int) ( _strenght * _level.StrenghtMultilier );
+
+        public int Dexterity => (int) ( _dexterity * _level.DexterityMultiplier );
+
+        public int HealthPoints => (int) ( _healthPoints * _level.HealthPointsMultiplier );
+
+        public double Money => _money;
+        
+        public int Level => _level.CreatureLevel;
+
 
         #region methods
 

@@ -18,7 +18,7 @@ namespace RolePlayingGame {
                 result = new AttackResult( Results.Failed, 0, 0 );
             }
             else {
-                int res = other.Parry( Fate.Next( 0, _strenght + 1 ), this );
+                int res = other.Parry( Fate.Next( 0, Strenght + 1 ), this );
                 if ( res      > 0 ) result = new AttackResult( Results.Success, res, 0 );
                 else if ( res < 0 ) result = new AttackResult( Results.ParryAndRiposte, 0, res * ( -1 ) );
                 else result                = new AttackResult( Results.Parry, 0, 0 );
@@ -37,13 +37,13 @@ namespace RolePlayingGame {
         /// </summary>
         public override int Parry( int damage, Creature attacker ) {
             //il goblin viene danneggiato
-            if ( _dexterity < damage ) {
-                damage -= _dexterity;
+            if ( Dexterity < damage ) {
+                damage -= Dexterity;
                 DecreaseHealth( damage );
                 return damage;
             }
             //il goblin effettua un parry con riposte alla creatura avversaria
-            else if ( _dexterity >= damage * 2 ) {
+            else if ( Dexterity >= damage * 2 ) {
                 return attacker.Riposte( damage ) * ( -1 );
             }
             //il goblin effettua un parry all'attcco
