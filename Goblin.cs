@@ -4,8 +4,19 @@ namespace RolePlayingGame {
     public class Goblin : Creature {
         public Goblin( string name, int strenght, int dexterity, int healthPoints )
             : base( name, strenght, dexterity, healthPoints ) {
+            _level              = new LevelForGoblin();
+            _criticalHitChances = 2;
         }
 
+#region Fighting Methods
+
+        /// <summary>
+        /// Metodo per controllare se si verifica un colpo critico oppure no,
+        /// Di default un goblin ha il 2% di chance di effettuare un colpo critico
+        /// </summary>
+        protected override int CriticalHit( ) {
+            return Fate.Next( 0, 101 ) < _criticalHitChances ? 2 : 1;
+        }
 
         /// <summary>
         /// La creatura attacca un'altra creatura
@@ -14,14 +25,30 @@ namespace RolePlayingGame {
         /// </summary>
         public override AttackResult Attack( Creature other ) {
             AttackResult result;
-            if ( base.IsDead || base.IsUnconscious ) {
+            if ( base.IsDead || base.IsUnconscious || other.IsDead || other.IsUnconscious ) {
                 result = new AttackResult( Results.Failed, 0, 0 );
             }
             else {
-                int res = other.Parry( Fate.Next( 0, Strenght + 1 ), this );
-                if ( res      > 0 ) result = new AttackResult( Results.Success, res, 0 );
-                else if ( res < 0 ) result = new AttackResult( Results.ParryAndRiposte, 0, res * ( -1 ) );
-                else result                = new AttackResult( Results.Parry, 0, 0 );
+                int res = other.Parry( Fate.Next( 0, Strenght + 1 ), CriticalHit(), this );
+                if ( res > 0 ) {
+                    result = new AttackResult( Results.Success, res, 0 );
+                    //se il goblin uccide la creatura nemica aumenta l'esperienza 
+                    //e ruba tutti i soldi che possedeva l'altra creatura 
+                    if ( other.IsDead || other.IsUnconscious ) {
+                        _level.GainExperience( 10 * other.Level );
+                        if ( _level.LevelUp() ) {
+                            LevelUpCharacteristic();
+                        }
+
+                        _money += ( other.Money );
+                    }
+                }
+                else if ( res < 0 ) {
+                    result = new AttackResult( Results.ParryAndRiposte, 0, res * ( -1 ) );
+                }
+                else {
+                    result = new AttackResult( Results.Parry, 0, 0 );
+                }
             }
 
             return result;
@@ -35,9 +62,10 @@ namespace RolePlayingGame {
         /// Se la destrezza è un valore doppio o maggiore del doppio del danno viene eseguita anche una deflezione
         /// che consite nel danneggiare l'avversario con i suoi stessi danni moltiplicati per 1,5
         /// </summary>
-        public override int Parry( int damage, Creature attacker ) {
+        public override int Parry( int damage, int criticalHit, Creature attacker ) {
             //il goblin viene danneggiato
             if ( Dexterity < damage ) {
+                damage *= criticalHit;
                 damage -= Dexterity;
                 DecreaseHealth( damage );
                 return damage;
@@ -61,6 +89,16 @@ namespace RolePlayingGame {
             DecreaseHealth( damage );
             return damage;
         }
+
+#endregion
+
+        protected override void LevelUpCharacteristic( ) {
+            _strenght            = (int) ( Strenght             * _level.StrenghtMultilier );
+            _dexterity           = (int) ( Dexterity            * _level.DexterityMultiplier );
+            _initialHealthPoints = (int) ( _initialHealthPoints * _level.HealthPointsMultiplier );
+            _healthPoints        = _initialHealthPoints;
+        }
+
 
         public override string ToString( ) {
             return "Tipo:       Goblin\n" + base.ToString();

@@ -15,7 +15,7 @@ namespace RolePlayingGame {
 
         //costruttore
         protected Level( ) {
-            _level                  = 0;
+            _level                  = 1;
             _experience             = 0;
             _expToLevel             = 100;
             _strenghtMultilier      = 1;
@@ -34,30 +34,8 @@ namespace RolePlayingGame {
         public double DexterityMultiplier => _dexterityMultiplier;
 
         public double HealthPointsMultiplier => _healthPointsMultiplier;
-
-
-        /// <summary>
-        /// Metodo per il levelling up
-        /// Se la creatura ha abbastanza esperienza livella automaticamente
-        /// Il cap del livello delle creature è il 10
-        /// Vengono incrementate le caratteristiche di:
-        /// Strenght -> 10%
-        /// Dexterity -> 10%
-        /// HealthPoints -> 20%
-        /// L'esperienza non viene azzerata ma si usa solo quella che serve
-        /// L'esperienza necessaria per raggiungere il prossimo livello
-        /// è 20 volte maggiore a quella del livello prima
-        /// </summary>
-        public bool LevelUp( ) {
-            if ( _experience < _expToLevel || _level == 10 ) return false;
-            _level++;
-            _strenghtMultilier      += 0.1f;
-            _dexterityMultiplier    += 0.1f;
-            _healthPointsMultiplier += 0.2f;
-            _experience             -= _expToLevel;
-            _expToLevel             *= 20;
-            return true;
-        }
+        
+        public abstract bool LevelUp( );
     }
     
     /// <summary>
@@ -68,7 +46,54 @@ namespace RolePlayingGame {
     /// Esempio: un goblin diventa re goblin dopo aver guadagnato 1
     /// </summary>
     public class LevelForWarrior : Level {
+        /// <summary>
+        /// Metodo per il levelling up
+        /// Se il guerriero ha abbastanza esperienza livella automaticamente
+        /// Il cap del livello dei guerrieri è il 10
+        /// Vengono incrementate le caratteristiche di:
+        /// Strenght -> 10%
+        /// Dexterity -> 10%
+        /// HealthPoints -> 20%
+        /// L'esperienza non viene azzerata ma si usa solo quella che serve
+        /// L'esperienza necessaria per raggiungere il prossimo livello
+        /// è 20 volte maggiore a quella del livello prima
+        /// </summary>
+        public override bool LevelUp( ) {
+            if ( _experience < _expToLevel || _level == 10 ) return false;
+            _level++;
+            _strenghtMultilier      += 0.1f;
+            _dexterityMultiplier    += 0.1f;
+            _healthPointsMultiplier += 0.2f;
+            _experience             -= _expToLevel;
+            _expToLevel             *= 20;
+            return true;
+        }
+    }
+
+    public class LevelForGoblin : Level {
         
+        // <summary>
+        /// Metodo per il levelling up
+        /// Se il goblin ha abbastanza esperienza livella automaticamente
+        /// Il cap del livello dei goblin è il 6  
+        /// Vengono incrementate le caratteristiche di:
+        /// Strenght -> 15%
+        /// Dexterity -> 15%
+        /// HealthPoints -> 10%
+        /// L'esperienza non viene azzerata ma si usa solo quella che serve
+        /// L'esperienza necessaria per raggiungere il prossimo livello
+        /// è 20 volte maggiore a quella del livello prima
+        /// </summary>
+        public override bool LevelUp( ) {
+            if ( _experience < _expToLevel || _level == 6 ) return false;
+            _level++;
+            _strenghtMultilier      += 0.15f;
+            _dexterityMultiplier    += 0.15f;
+            _healthPointsMultiplier += 0.1f;
+            _experience             -= _expToLevel;
+            _expToLevel             *= 20;
+            return true;
+        }
     }
     
     

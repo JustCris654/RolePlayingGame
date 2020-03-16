@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_RolePlayingGame.1942244443.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p=".gitignore" t="Include" />
+      <e p="Armor.cs" t="Include" />
+      <e p="AttackResult.cs" t="Include" />
+      <e p="Creature.cs" t="Include" />
+      <e p="Esercizio_21_RPGpdf.pdf" t="Include" />
+      <e p="Goblin.cs" t="Include" />
+      <e p="Level.cs" t="Include" />
+      <e p="Program.cs" t="Include" />
+      <e p="README.md" t="Include" />
+      <e p="RolePlayingGame.csproj" t="IncludeRecursive" />
+      <e p="RolePlayingGame.sln" t="IncludeFlat" />
+      <e p="Warrior.cs" t="Include" />
+      <e p="Weapon.cs" t="Include" />
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp3.1" t="Include">
+            <e p="RolePlayingGame.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

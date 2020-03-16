@@ -27,6 +27,11 @@ namespace RolePlayingGame {
         //proprietà per il costo per riparare
         public double CostForRepair => _costForRepair;
 
+        //riduce l'integrità dell'armatura ad ogni difesa
+        public void ReduceIntegrity( ) {
+            _integrity--;
+        }
+
         //Ripara completamente l'armatura
         public void Repair( ) {
             _integrity = _initialIntegrity;

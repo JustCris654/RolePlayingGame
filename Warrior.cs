@@ -1,3 +1,5 @@
+using System.Threading.Tasks.Dataflow;
+
 namespace RolePlayingGame {
     public class Warrior : Creature {
         //variabili aggiuntive a quelle della classe Creature
@@ -25,6 +27,8 @@ namespace RolePlayingGame {
             if ( _armor != null ) {
                 _modDexterity += armor.Protection;
             }
+
+            _criticalHitChances = 5;
         }
 
         //nuova proprietà per Strenght, tiene conto anche dell'arma
@@ -34,6 +38,16 @@ namespace RolePlayingGame {
         public new int Dexterity => _modDexterity;
 
 
+#region Fighting Methods
+
+        /// <summary>
+        /// Metodo per controllare se si verifica un colpo critico oppure no,
+        /// Di default un guerriero ha il 5% di chance di effettuare un colpo critico
+        /// </summary>
+        protected override int CriticalHit( ) {
+            return Fate.Next( 0, 101 ) < _criticalHitChances ? 2 : 1;
+        }
+
         /// <summary>
         /// La creatura attacca un'altra creatura
         /// Restituisce i dati relativi all'attacco cioè:
@@ -41,17 +55,17 @@ namespace RolePlayingGame {
         /// </summary>
         public override AttackResult Attack( Creature other ) {
             AttackResult result;
-            if ( base.IsDead || base.IsUnconscious ) {
+            if ( base.IsDead || base.IsUnconscious || other.IsDead || other.IsUnconscious ) {
                 result = new AttackResult( Results.Failed, 0, 0 );
             }
             else {
-                int res = other.Parry( Fate.Next( 0, Strenght + 1 ), this );
+                int res = other.Parry( Fate.Next( 0, Strenght + 1 ), CriticalHit(), this );
                 if ( res > 0 ) {
                     result = new AttackResult( Results.Success, res, 0 );
-                    
+
                     //se il guerriero uccide la creatura nemica aumenta l'esperienza 
                     //e riceve la metà dei soldi che possedeva l'altra creatura (li ruba in fretta)
-                    if ( other.IsDead ) {
+                    if ( other.IsDead || other.IsUnconscious ) {
                         _level.GainExperience( 10 * other.Level );
                         if ( _level.LevelUp() ) {
                             LevelUpCharacteristic();
@@ -66,27 +80,10 @@ namespace RolePlayingGame {
                 else {
                     result = new AttackResult( Results.Parry, 0, 0 );
                 }
+                _weapon.ReduceIntegrity();
             }
 
             return result;
-        }
-        
-        /// <summary>
-        /// Metodo che aumenta le caratteristiche in base al proprio moltiplicatore
-        /// All'aumento di livello la vita viene ripristinata completamente
-        /// </summary>
-        private void LevelUpCharacteristic( ) {
-            _modStrenght = base.Strenght;
-            if ( _weapon != null ) {
-                _modStrenght += _weapon.Damage;
-            }
-
-            _modDexterity = base.Dexterity;
-            if ( _armor != null ) {
-                _modDexterity += _armor.Protection;
-            }
-
-            _healthPoints = (int) ( InitialHealthPoints * _level.HealthPointsMultiplier );
         }
 
 
@@ -97,9 +94,10 @@ namespace RolePlayingGame {
         /// Se la destrezza è un valore doppio o maggiore del doppio del danno viene eseguita anche una deflezione
         /// che consite nel danneggiare l'avversario con i suoi stessi danni moltiplicati per 1,5
         /// </summary>
-        public override int Parry( int damage, Creature attacker ) {
+        public override int Parry( int damage, int criticalHit, Creature attacker ) {
             //il guerriero viene danneggiato
             if ( Dexterity < damage ) {
+                damage *= criticalHit;
                 damage -= Dexterity;
                 DecreaseHealth( damage );
                 return damage;
@@ -122,6 +120,32 @@ namespace RolePlayingGame {
             damage = (int) ( damage * 1.5f );
             DecreaseHealth( damage );
             return damage;
+        }
+
+#endregion
+
+        /// <summary>
+        /// Metodo che aumenta le caratteristiche in base al proprio moltiplicatore
+        /// All'aumento di livello la vita viene ripristinata completamente
+        /// </summary>
+        protected override void LevelUpCharacteristic( ) {
+            //aumento la variabile _modStrenght del guerriero secondo il moltiplicatore del livello
+            _strenght = (int) ( base.Strenght * _level.StrenghtMultilier );
+            _modStrenght = base.Strenght;
+            if ( _weapon != null ) {
+                _modStrenght += _weapon.Damage;
+            }
+
+            //aumento la variabile _modDexterity del guerriero secondo il moltiplicatore del livello
+            _dexterity = (int) ( base.Dexterity * _level.DexterityMultiplier );
+            _modDexterity = base.Dexterity;
+            if ( _armor != null ) {
+                _modDexterity += _armor.Protection;
+            }
+
+            //aumento la variabile HealthPoints e InitialHealthPoints riportando la vita al massimo prima
+            InitialHealthPoints = (int) ( InitialHealthPoints * _level.HealthPointsMultiplier );
+            HealthPoints        = InitialHealthPoints;
         }
 
         /// <summary>
