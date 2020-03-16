@@ -11,6 +11,15 @@ namespace RolePlayingGame {
 #region Fighting Methods
 
         /// <summary>
+        /// Metodo da ridefinire, la creatura attaccata non puo difendersi 
+        /// </summary>
+        public override AttackResult MagicalDamage( int damage ) {
+            DecreaseHealth( damage - _dexterity );
+            var result = new AttackResult( Results.Success, damage, 0 );
+            return result;
+        }
+
+        /// <summary>
         /// Metodo per controllare se si verifica un colpo critico oppure no,
         /// Di default un goblin ha il 2% di chance di effettuare un colpo critico
         /// </summary>

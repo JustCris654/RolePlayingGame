@@ -11,6 +11,9 @@ namespace RolePlayingGame {
             Console.ReadKey();
             Console.WriteLine("\n\n\n");
             TestLevels("warrior");
+            
+            
+            
         }
 
         private static void TestLevels( string type ) {
@@ -92,8 +95,8 @@ namespace RolePlayingGame {
                     if ( !army2[i].IsAlive ) army2.RemoveAt( i );
                 }
 
-                //Console.WriteLine( "Armata 1: " + army1.Count + " sopravissuti" );
-                //Console.WriteLine( "Armata 2: " + army2.Count + " sopravissuti" );
+                Console.WriteLine( "Armata 1: " + army1.Count + " sopravissuti" );
+                Console.WriteLine( "Armata 2: " + army2.Count + " sopravissuti" );
             }
 
             if ( army1.Count > army2.Count ) {

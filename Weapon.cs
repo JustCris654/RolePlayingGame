@@ -21,9 +21,12 @@ namespace RolePlayingGame {
         //proprietà per l'integrità
         public int Integrity => _integrity;
 
+        //proprietà per l'integrità iniziale
+        public int InitialIntegrity => _initialIntegrity;
+
         //proprietà per il costo
         public double Cost => _cost;
-        
+
         //proprietà per il costo per riparare
         public double CostForRepair => _costForRepair;
 

@@ -41,6 +41,15 @@ namespace RolePlayingGame {
 #region Fighting Methods
 
         /// <summary>
+        /// Metodo da ridefinire, la creatura attaccata non puo difendersi 
+        /// </summary>
+        public override AttackResult MagicalDamage( int damage ) {
+            DecreaseHealth( damage - _dexterity );
+            var result = new AttackResult( Results.Success, damage, 0 );
+            return result;
+        }
+
+        /// <summary>
         /// Metodo per controllare se si verifica un colpo critico oppure no,
         /// Di default un guerriero ha il 5% di chance di effettuare un colpo critico
         /// </summary>
@@ -80,7 +89,13 @@ namespace RolePlayingGame {
                 else {
                     result = new AttackResult( Results.Parry, 0, 0 );
                 }
+
                 _weapon.ReduceIntegrity();
+                if ( _weapon.Integrity <= (int) ( 0.15f * _weapon.InitialIntegrity ) &&
+                     _money            >= _weapon.CostForRepair ) {
+                    _money -= _weapon.CostForRepair;
+                    _weapon.Repair();
+                }
             }
 
             return result;
@@ -130,14 +145,14 @@ namespace RolePlayingGame {
         /// </summary>
         protected override void LevelUpCharacteristic( ) {
             //aumento la variabile _modStrenght del guerriero secondo il moltiplicatore del livello
-            _strenght = (int) ( base.Strenght * _level.StrenghtMultilier );
+            _strenght    = (int) ( base.Strenght * _level.StrenghtMultilier );
             _modStrenght = base.Strenght;
             if ( _weapon != null ) {
                 _modStrenght += _weapon.Damage;
             }
 
             //aumento la variabile _modDexterity del guerriero secondo il moltiplicatore del livello
-            _dexterity = (int) ( base.Dexterity * _level.DexterityMultiplier );
+            _dexterity    = (int) ( base.Dexterity * _level.DexterityMultiplier );
             _modDexterity = base.Dexterity;
             if ( _armor != null ) {
                 _modDexterity += _armor.Protection;

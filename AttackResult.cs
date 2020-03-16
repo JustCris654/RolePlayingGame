@@ -1,5 +1,4 @@
 namespace RolePlayingGame {
-    
     /// <summary>
     /// Struct che riassume il risultato di un attacco
     /// Viene usata una variabile enum per le 4 possibili situazioni verificabili
@@ -30,7 +29,7 @@ namespace RolePlayingGame {
                    "Danno preso:       " + DamageTaken;
         }
     }
-    
+
     /// <summary>
     /// Variabile enumerativa che contiene i 4 possibili risultati di un attacco
     /// Quindi Success in caso l'attacco ha un esito positivo

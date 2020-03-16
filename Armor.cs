@@ -20,7 +20,7 @@ namespace RolePlayingGame {
 
         //proprietà per il costo
         public double Cost => _cost;
-        
+
         //riduce l'integrità dell'arma ad ogni attacco
         public void ReduceIntegrity( ) {
             _integrity--;
@@ -37,7 +37,7 @@ namespace RolePlayingGame {
     /// Rappresenta un'armatura a piastre 
     /// </summary>
     public class PlateArmor : Armor {
-        public PlateArmor(  )
+        public PlateArmor( )
             : base( 3, 1000, 1000 ) {
         }
     }

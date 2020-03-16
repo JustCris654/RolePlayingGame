@@ -12,7 +12,7 @@ namespace RolePlayingGame {
         protected        double _money;
         protected        Level  _level;
         protected        int    _initialHealthPoints;
-        protected int _criticalHitChances;
+        protected        int    _criticalHitChances;
         protected static Random Fate { get; } = new Random();
 
 #endregion
@@ -50,12 +50,17 @@ namespace RolePlayingGame {
 
         //attacco
         public abstract AttackResult Attack( Creature other );
+        
+        //riceve danno da incantesimo
+        public abstract AttackResult MagicalDamage( int damage );
 
         //parata
         public abstract int Parry( int damage, int criticalHit, Creature attacker );
 
         //risposta
         public abstract int Riposte( int damage );
+        
+        
 
 
         protected void DecreaseHealth( int damage ) {

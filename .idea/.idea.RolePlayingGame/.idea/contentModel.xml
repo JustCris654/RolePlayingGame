@@ -15,6 +15,8 @@
       <e p="README.md" t="Include" />
       <e p="RolePlayingGame.csproj" t="IncludeRecursive" />
       <e p="RolePlayingGame.sln" t="IncludeFlat" />
+      <e p="Sorcerer.cs" t="Include" />
+      <e p="Spell.cs" t="Include" />
       <e p="Warrior.cs" t="Include" />
       <e p="Weapon.cs" t="Include" />
       <e p="bin" t="ExcludeRecursive" />

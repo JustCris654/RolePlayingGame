@@ -5,13 +5,13 @@ namespace RolePlayingGame {
     /// e ovviamente si può migliorare ed equilibrare in futuro
     /// </summary>
     public abstract class Level {
-        protected int _level;            //livello attuale della creatura
-        protected long _experience;       //esperienza 
-        protected long _expToLevel;       //esperienza necessaria a raggiungere il prossimo livello
+        protected int  _level;      //livello attuale della creatura
+        protected long _experience; //esperienza 
+        protected long _expToLevel; //esperienza necessaria a raggiungere il prossimo livello
 
-        protected double _strenghtMultilier;        //moltiplicatore della forza
-        protected double _dexterityMultiplier;      //moltiplicatore della destrezza
-        protected double _healthPointsMultiplier;   //moltiplicatore della vita
+        protected double _strenghtMultilier;      //moltiplicatore della forza
+        protected double _dexterityMultiplier;    //moltiplicatore della destrezza
+        protected double _healthPointsMultiplier; //moltiplicatore della vita
 
         //costruttore
         protected Level( ) {
@@ -34,10 +34,10 @@ namespace RolePlayingGame {
         public double DexterityMultiplier => _dexterityMultiplier;
 
         public double HealthPointsMultiplier => _healthPointsMultiplier;
-        
+
         public abstract bool LevelUp( );
     }
-    
+
     /// <summary>
     /// Per ora è inutile come classe per serve per aggiungerci in futuro
     /// estensioni del livello massimo ad alcune specifiche classi
@@ -71,7 +71,6 @@ namespace RolePlayingGame {
     }
 
     public class LevelForGoblin : Level {
-        
         // <summary>
         /// Metodo per il levelling up
         /// Se il goblin ha abbastanza esperienza livella automaticamente
@@ -95,7 +94,4 @@ namespace RolePlayingGame {
             return true;
         }
     }
-    
-    
-    
 }
