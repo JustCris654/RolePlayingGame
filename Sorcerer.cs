@@ -18,6 +18,7 @@ namespace RolePlayingGame {
             get => _mana;
             set => _mana = value;
         }
+        
 
 
 #region Metodi da implementare
