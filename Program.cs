@@ -7,11 +7,11 @@ namespace RolePlayingGame {
     class Program {
         static void Main( string[] args ) {
             // ArmyWar();
-            TestLevels("goblin");
-            Console.ReadKey();
-            Console.WriteLine("\n\n\n");
-            TestLevels("warrior");
-            
+            // TestLevels("goblin");
+            // Console.ReadKey();
+            // Console.WriteLine("\n\n\n");
+            // TestLevels("warrior");
+            FightSorcerers();
             
             
         }
@@ -56,6 +56,19 @@ namespace RolePlayingGame {
                 }
             }
             
+        }
+
+
+        public static void FightSorcerers( ) {
+            Creature s1 = new Sorcerer("Orbeck of Vinheim", 20, 5, 100, 500);
+            Creature s2 = new Sorcerer("Orbeck of Vinheim", 15, 4, 100, 500);
+            while ( s1.IsAlive && s2.IsAlive ) {
+                Console.WriteLine( s1.Attack( s2 ) );
+                Console.WriteLine( s2.Attack( s1 ) );
+                //Console.ReadKey();
+            }
+
+            Console.WriteLine( s1.IsAlive?"Ha vinto s1":"Ha vinto s2" );
         }
 
         private static void Fight( Creature a, Creature b ) {

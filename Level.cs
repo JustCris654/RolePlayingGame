@@ -94,4 +94,18 @@ namespace RolePlayingGame {
             return true;
         }
     }
+
+    public class LevelForSorcerer : Level {
+        public override bool LevelUp( ) {
+            if ( _experience < _expToLevel || _level == 10 ) return false;
+            _level++;
+            _strenghtMultilier      += 0.12f;
+            _dexterityMultiplier    += 0.12f;
+            _healthPointsMultiplier += 0.15f;
+            _experience             -= _expToLevel;
+            _expToLevel             *= 20;
+            return true;
+        }
+    }
+    
 }
